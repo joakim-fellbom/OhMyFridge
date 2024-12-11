@@ -1,15 +1,15 @@
 from flask import Flask, request, jsonify, render_template
 import pandas as pd
-from logic.recipe_filter import filter_recipes_by_ingredients
+from logic.recipe_filter import filter_recipes_by_ingredients_and_allergies
 
 app = Flask(__name__)
 
 # Chargement des données de recettes
-data = pd.read_csv("data/full_dataset.csv")
+data = pd.read_csv("data/full_dataset.csv", sep=',', nrows=1000)
 data['ingredients'] = data['ingredients'].apply(eval)  # Convertir la chaîne en liste Python
 
 # Liste pour stocker les ingrédients sélectionnés par l'utilisateur
-selected_ingredients = []
+selected_ingredients = ['Chicken']
 
 @app.route("/")
 def home():
@@ -23,10 +23,19 @@ def add_ingredient():
         selected_ingredients.append(ingredient)
     return jsonify(selected_ingredients)
 
+allergies = ['Tomato']
+
+@app.route('/add_allergy', methods=['POST'])
+def add_allergy():
+    allergy = request.json.get('allergy')
+    if allergy and allergy not in allergies:
+        allergies.append(allergy)
+    return jsonify(allergies)
+
 @app.route("/get_recipes", methods=["GET"])
 def get_recipes():
     global selected_ingredients
-    filtered_recipes = filter_recipes_by_ingredients(data, selected_ingredients)
+    filtered_recipes = filter_recipes_by_ingredients_and_allergies(data, selected_ingredients, allergies)
     recipes = filtered_recipes.to_dict(orient="records")  # Convertir le DataFrame en liste de dictionnaires
     return jsonify(recipes)
 
@@ -35,6 +44,11 @@ def reset_ingredients():
     global selected_ingredients
     selected_ingredients = []
     return jsonify(selected_ingredients)
+
+@app.route('/reset_allergies', methods=['POST'])
+def reset_allergies():
+    allergies.clear()
+    return jsonify(allergies)
 
 if __name__ == "__main__":
     app.run(debug=True)

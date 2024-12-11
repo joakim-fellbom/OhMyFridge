@@ -51,7 +51,7 @@
 /* ===========================
    SECTION STYLES
    =========================== */
-   section {
+section {
     margin-top: 10px; /* Réduit l'écart global au-dessus des sections */
     margin-bottom: 20px; /* Réduit l'écart global en dessous des sections */
 }
@@ -63,7 +63,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-   
     margin-bottom: 20px;
     padding: 60px 20px;
     background-color: #f9f9f9;
@@ -108,6 +107,29 @@
 }
 
 /* ===========================
+   INPUT CONTAINERS
+   =========================== */
+   .input-containers {
+    display: flex;
+    justify-content: center; /* Centre horizontalement */
+    align-items: flex-start; /* Aligne les conteneurs en haut */
+    gap: 20px; /* Espace entre les conteneurs */
+    margin: 40px auto; /* Espace en haut et en bas, centré horizontalement */
+}
+
+.search-container,
+.allergy-container {
+    flex: 1; /* Les conteneurs prennent une largeur égale */
+    max-width: 450px; /* Limite leur largeur maximale */
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    text-align: center;
+}
+
+
+/* ===========================
    SEARCH SECTION
    =========================== */
 .search-container {
@@ -148,6 +170,49 @@
 
 .search-container button:hover {
     background-color: #28a745;
+}
+
+/* ===========================
+   ALLERGY SECTION
+   =========================== */
+.allergy-container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 40px;
+    max-width: 400px; /* Moins large que le search container */
+    margin: 0 auto;
+}
+
+.allergy-container h2 {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.allergy-container input {
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.allergy-container button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #91654c; /* Brown button */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.allergy-container button:hover {
+    background-color: #754c3d; /* Darker brown on hover */
 }
 
 /* ===========================
@@ -210,17 +275,6 @@
 /* ===========================
    INGREDIENT LIST & SHOW RECIPES BUTTON
    =========================== */
-.ingredient-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-top: 20px;
-}
-
-.ingredient-list {
-    flex: 1;
-}
-
 .selected-ingredients h3 {
     font-size: 18px;
     font-weight: 600;
@@ -233,8 +287,6 @@
     padding: 0;
     list-style-type: none;
 }
-
-/* Specific style for the "Show Recipes" button */
 
 .show-recipes-btn {
     padding: 10px 20px;
@@ -250,7 +302,7 @@
 }
 
 .show-recipes-btn:hover {
-    background-color: #91654c; /* Darker brown on hover */
+    background-color: #754c3d; /* Darker brown on hover */
 }
 
 .search-container .show-recipes-btn {

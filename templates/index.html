@@ -32,24 +32,45 @@
     </div>
 </section>
 
-<!-- Recipe Search Section -->
-<section id="recipe-search" class="search-container">
-    <h2>What do you have in your fridge ?</h2>
-    <div class="search-input">
-        <input type="text" id="ingredient-input" placeholder="Enter an ingredient">
-        <button onclick="addIngredient()">Add Ingredient</button>
-        <button onclick="resetIngredients()">Reset List</button>
-    </div>
-    <div class="ingredient-section">
-        <div id="selected-ingredients-container" class="selected-ingredients" style="display: none;">
-            <h3>Selected Ingredients:</h3>
-            <ul id="ingredient-list"></ul>
+<div class="input-containers">
+    <div class="search-container">
+        <!-- Contenu de la section "Search" -->
+        <h2>What do you have in your fridge?</h2>
+        <div class="search-input">
+            <input type="text" id="ingredient-input" placeholder="Enter an ingredient">
+            <button onclick="addIngredient()">Add Ingredient</button>
+            <button onclick="resetIngredients()">Reset List</button>
         </div>
-        <button id="show-recipes-btn" class="show-recipes-btn" onclick="fetchRecipes()" style="display: none;">
-            Show Recipes
-        </button>
-    </div>    
-</section>
+        <div class="ingredient-section">
+            <div id="selected-ingredients-container" class="selected-ingredients" style="display: none;">
+                <h3>Selected Ingredients:</h3>
+                <ul id="ingredient-list"></ul>
+            </div>
+            <button id="show-recipes-btn" class="show-recipes-btn" onclick="fetchRecipes()" style="display: none;">
+                Show Recipes
+            </button>
+        </div>
+    </div>
+
+    <div class="allergy-container">
+        <!-- Contenu de la section "Allergies" -->
+        <h2>Allergies</h2>
+        <div class="allergy-input">
+            <input type="text" id="allergy-input" placeholder="Enter an allergy">
+            <button onclick="addAllergy()">Add Allergy</button>
+            <button onclick="resetAllergies()">Reset List</button>
+        </div>
+        <div class="allergy-section">
+            <div id="selected-allergies-container" class="selected-allergies" style="display: none;">
+                <h3>Selected Allergies:</h3>
+                <ul id="allergy-list"></ul>
+            </div>
+            <button id="show-allergy-info-btn" class="show-allergy-info-btn" onclick="fetchAllergyInfo()" style="display: none;">
+                Show Allergy Info
+            </button>
+        </div>
+    </div>
+</div>
 
    <!-- Recipe Results Section -->
 <!-- Recipe Results Section -->
