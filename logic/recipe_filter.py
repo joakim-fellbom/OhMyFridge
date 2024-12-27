@@ -1,4 +1,5 @@
 import pandas as pd
+import logging 
 
 def filter_recipes_by_ingredients_and_allergies(data, input_ingredients, allergies):
     """
@@ -10,9 +11,6 @@ def filter_recipes_by_ingredients_and_allergies(data, input_ingredients, allergi
     :param allergies: Liste des allergies à éviter dans les recettes.
     :return: DataFrame contenant les recettes qui correspondent.
     """
-    # Affiche et nettoie les noms de colonnes
-    print("Colonnes du DataFrame :", data.columns.tolist())
-    data.columns = data.columns.str.strip()  # Nettoie les espaces autour des noms de colonnes
 
     # Vérifie que les colonnes nécessaires sont présentes
     required_columns = ['title', 'ingredients', 'directions']
@@ -21,7 +19,7 @@ def filter_recipes_by_ingredients_and_allergies(data, input_ingredients, allergi
             raise KeyError(f"La colonne {col} est absente du DataFrame.")
 
     # Supprime les lignes avec des valeurs manquantes dans 'ingredients'
-    data = data[data['ingredients'].notna()]
+    data = data[data['NER'].notna()]
 
     # Définitions des fonctions de filtrage
     def contains_all_ingredients(recipe_ingredients):
@@ -31,8 +29,8 @@ def filter_recipes_by_ingredients_and_allergies(data, input_ingredients, allergi
         return any(allergy in recipe_ingredients for allergy in allergies)
 
     # Applique les filtres
-    filtered_data = data[data['ingredients'].apply(contains_all_ingredients)]
-    filtered_data = filtered_data[~filtered_data['ingredients'].apply(contains_allergies)]
+    filtered_data = data[data['NER'].apply(contains_all_ingredients)]
+    filtered_data = filtered_data[~filtered_data['NER'].apply(contains_allergies)]
 
     # Retourne uniquement les colonnes nécessaires
     return filtered_data[['title', 'ingredients', 'directions']]

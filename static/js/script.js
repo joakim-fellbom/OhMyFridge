@@ -36,23 +36,27 @@ async function fetchIngredients() {
 }
 
 
-async function fetchRecipes() {
+document.getElementById("show-recipes-btn").addEventListener("click", () => {
+    fetchAllergies(); // Récupère les allergies avant
+    fetchRecipes(allergies); // Passe les allergies récupérées
+});
+
+async function fetchRecipes(allergies) {
     const response = await fetch("/get_recipes");
     const recipes = await response.json();
+    console.log("Recipes fetched:", recipes);
+
     const recipesContainer = document.getElementById("recipes-container");
     const recipesTitleContainer = document.getElementById("recipes-title-container");
 
     recipesContainer.innerHTML = ""; // Efface les résultats précédents
 
     if (recipes.length > 0) {
-        // Affiche le titre "Recipes:"
         recipesTitleContainer.style.display = "block";
 
-        // Ajoute les recettes au conteneur
         recipes.forEach((recipe) => {
-            // Vérifie les allergies pour chaque recette
             const hasAllergy = recipe.ingredients.some(ingredient => 
-                allergies.includes(ingredient) // allergies est un tableau global contenant toutes les allergies
+                allergies.includes(ingredient)
             );
 
             if (!hasAllergy) {
@@ -139,6 +143,8 @@ async function fetchAllergies() {
     const response = await fetch("/get_allergies");
     const ingredients = await response.json();
     recipesTitleContainer.style.display = "block";
+    console.log("Allergies fetched:", allergies); // Vérification dans la console
+
     updateAllergiesList(allergies);
 }
 
@@ -152,3 +158,4 @@ function resetAllergies() {
 
 // Initialize the list on page load
 fetchIngredients();
+fetchAllergies();
