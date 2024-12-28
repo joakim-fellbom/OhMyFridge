@@ -1,16 +1,16 @@
 from flask import Flask, request, jsonify, render_template
 import pandas as pd
 from logic.recipe_filter import filter_recipes_by_ingredients
-from logic.nutriscore_calculator import add_nutriscore_to_dataset
+#from logic.nutriscore_calculator import add_nutriscore_to_dataset
 
 app = Flask(__name__)
 
 # Load recipe data
-data = pd.read_csv("data/full_dataset.csv")
+data = pd.read_csv("data/full_dataset_with_nutriscore.csv")
 data['ingredients'] = data['ingredients'].apply(eval)  # Convert string to Python list
 
 # Add nutriscore to the dataset
-data = add_nutriscore_to_dataset(data)
+#data = add_nutriscore_to_dataset(data)
 
 # List to store selected ingredients
 selected_ingredients = []
@@ -41,4 +41,4 @@ def reset_ingredients():
     return jsonify(selected_ingredients)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)

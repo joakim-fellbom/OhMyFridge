@@ -127,8 +127,8 @@ def print_ingredient_analysis(analysis: dict):
     print(f"Total unique ingredients: {analysis['unique_ingredients']}")
     print(f"Total ingredient occurrences: {analysis['total_occurrences']}\n")
     
-    print("Top 50 most common ingredients:")
-    for i, (ingredient, count) in enumerate(list(analysis['frequency_distribution'].items())[:50], 1):
+    print("Top 1000 most common ingredients:")
+    for i, (ingredient, count) in enumerate(list(analysis['frequency_distribution'].items())[:1000], 1):
         print(f"{i:2d}. {ingredient:<30} ({count} occurrences)")
     
     print("\nSample of original to cleaned mappings:")
