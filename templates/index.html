@@ -34,7 +34,7 @@
 
 <!-- Recipe Search Section -->
 <section id="recipe-search" class="search-container">
-    <h2>What do you have in your fridge ?</h2>
+    <h2>What do you have in your fridge?</h2>
     <div class="search-input">
         <input type="text" id="ingredient-input" placeholder="Enter an ingredient">
         <button onclick="addIngredient()">Add Ingredient</button>
@@ -45,6 +45,11 @@
             <h3>Selected Ingredients:</h3>
             <ul id="ingredient-list"></ul>
         </div>
+        <!-- Ajout de la case à cocher pour exactement les ingredients en input -->
+        <label>
+            <input type="checkbox" id="exact-match-checkbox">
+            <h3>Exactly these ingredients</h3>  
+        </label>
         <button id="show-recipes-btn" class="show-recipes-btn" onclick="fetchRecipes()" style="display: none;">
             Show Recipes
         </button>

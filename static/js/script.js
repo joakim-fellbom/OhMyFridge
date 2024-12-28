@@ -36,12 +36,23 @@ async function fetchIngredients() {
 }
 
 async function fetchRecipes() {
-    const response = await fetch("/get_recipes");
+    // Récupérer l'état de la case à cocher "exact match"
+    const exactMatch = document.getElementById("exact-match-checkbox").checked;
+
+    // Envoyer l'état du checkbox au backend avec la requête
+    const response = await fetch("/get_recipes", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ exact_match: exactMatch })  // Ajout de la donnée exact_match
+    });
+
     const recipes = await response.json();
     const recipesContainer = document.getElementById("recipes-container");
     const recipesTitleContainer = document.getElementById("recipes-title-container");
 
-    recipesContainer.innerHTML = ""; // Efface les résultats précédents
+    recipesContainer.innerHTML = ""; // Effacer les résultats précédents
 
     if (recipes.length > 0) {
         // Affiche le titre "Recipes:"

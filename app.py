@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 import pandas as pd
-from logic.recipe_filter import filter_recipes_by_ingredients
+from logic.recipe_filter import filter_recipes_by_ingredients  # Assurez-vous que l'importation est correcte
 
 app = Flask(__name__)
 
@@ -23,12 +23,16 @@ def add_ingredient():
         selected_ingredients.append(ingredient)
     return jsonify(selected_ingredients)
 
-@app.route("/get_recipes", methods=["GET"])
+@app.route("/get_recipes", methods=["POST"])
 def get_recipes():
     global selected_ingredients
-    filtered_recipes = filter_recipes_by_ingredients(data, selected_ingredients)
+    exact_match = request.json.get("exact_match", False)  # Récupérer la valeur de exact_match
+
+    # Filtrage des recettes selon la correspondance exacte ou partielle
+    filtered_recipes = filter_recipes_by_ingredients(data, selected_ingredients, exact_match=exact_match)
+    
     recipes = filtered_recipes.to_dict(orient="records")  # Convertir le DataFrame en liste de dictionnaires
-    return jsonify(recipes)
+    return jsonify(recipes) 
 
 @app.route("/reset_ingredients", methods=["POST"])
 def reset_ingredients():
