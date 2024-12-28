@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodLy</title>
+    <!-- Google Font: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-brand">FoodLy</div>
+        <div class="navbar-links">
+            <a href="#home" class="nav-link">Home</a>
+            <a href="#about-us" class="nav-link">About Us</a>
+            <a href="#recipe-search" class="nav-link">Get Started</a>
+        </div>
+    </nav>
+
+<!-- Home Section -->
+<section id="home" class="home-section">
+    <div class="home-content">
+        <div class="home-text">
+            <h1>Welcome to <span class="highlight">FoodLy</span></h1>
+            <p>Your solution to reducing food waste and discovering amazing recipes!</p>
+        </div>
+        <div class="home-image">
+            <img src="/static/images/food_image.png" alt="Delicious Food" />
+        </div>
+    </div>
+</section>
+
+<!-- Recipe Search Section -->
+<section id="recipe-search" class="search-container">
+    <h2>What do you have in your fridge?</h2>
+    <div class="search-input">
+        <input type="text" id="ingredient-input" placeholder="Enter an ingredient">
+        <button onclick="addIngredient()">Add Ingredient</button>
+        <button onclick="resetIngredients()">Reset List</button>
+    </div>
+    <div class="ingredient-section">
+        <div id="selected-ingredients-container" class="selected-ingredients" style="display: none;">
+            <h3>Selected Ingredients:</h3>
+            <ul id="ingredient-list"></ul>
+        </div>
+        <!-- Ajout de la case à cocher pour exactement les ingredients en input -->
+        <label>
+            <input type="checkbox" id="exact-match-checkbox">
+            <h3>Exactly these ingredients</h3>  
+        </label>
+        <button id="show-recipes-btn" class="show-recipes-btn" onclick="fetchRecipes()" style="display: none;">
+            Show Recipes
+        </button>
+    </div>    
+</section>
+
+   <!-- Recipe Results Section -->
+<!-- Recipe Results Section -->
+<section id="recipe-results" class="recipe-results">
+    <div id="recipes-title-container" style="display: none;">
+        <h2>Choose your recipe :</h2>
+    </div>
+    <div id="recipes-container">
+        <!-- Les recettes apparaîtront ici -->
+    </div>
+</section>
+
+<script>
+    async function fetchRecipes() {
+        const response = await fetch("/get_recipes");
+        const recipes = await response.json();
+        const recipesContainer = document.getElementById("recipes-container");
+        recipesContainer.innerHTML = ""; // Efface les résultats précédents
+
+        recipes.forEach((recipe) => {
+            // Création d'un conteneur pour chaque recette
+            const recipeDiv = document.createElement("div");
+            recipeDiv.className = "recipe";
+
+            // Titre de la recette
+            const title = document.createElement("h3");
+            title.textContent = recipe.title;
+
+            // Section Ingrédients
+            const ingredientsDiv = document.createElement("div");
+            ingredientsDiv.className = "ingredients";
+            const ingredientsTitle = document.createElement("h4");
+            ingredientsTitle.textContent = "Ingredients:";
+            const ingredientsList = document.createElement("p");
+            ingredientsList.textContent = recipe.ingredients.join(", ");
+            ingredientsDiv.appendChild(ingredientsTitle);
+            ingredientsDiv.appendChild(ingredientsList);
+
+            // Section Directions
+            const directionsDiv = document.createElement("div");
+            directionsDiv.className = "directions";
+            const directionsTitle = document.createElement("h4");
+            directionsTitle.textContent = "Directions:";
+            const directionsText = document.createElement("p");
+            directionsText.textContent = recipe.directions;
+            directionsDiv.appendChild(directionsTitle);
+            directionsDiv.appendChild(directionsText);
+
+            // Ajout des sections au conteneur de la recette
+            recipeDiv.appendChild(title);
+            recipeDiv.appendChild(ingredientsDiv);
+            recipeDiv.appendChild(directionsDiv);
+
+            // Ajout de la recette au conteneur principal
+            recipesContainer.appendChild(recipeDiv);
+        });
+    }
+</script>
+
+
+    <!-- About Us Section -->
+    <section id="about-us" class="about-us">
+        <h2>About Us</h2>
+        <p>
+            At FoodLy, we believe in reducing food waste by helping you make the most out of the ingredients in your fridge. 
+            Discover recipes tailored to what you already have and make your cooking experience more sustainable and exciting!
+        </p>
+    </section>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
