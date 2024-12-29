@@ -83,9 +83,51 @@ async function fetchRecipes() {
             nutriscoreContainer.appendChild(nutriscoreDiv);
             nutriscoreContainer.appendChild(tooltip);
 
+            // Regime section
+            if (recipe.vege) {
+                const vegeContainer = document.createElement("div");
+                vegeContainer.className = "vege-container";
+            
+                const vegeDiv = document.createElement("div");
+                vegeDiv.className = "vege-badge";
+                vegeDiv.textContent = "Veggie";
+            
+                const tooltip = document.createElement("div");
+                tooltip.className = "vege-tooltip";
+                tooltip.textContent = "This recipe is vegetarian";
+            
+                vegeContainer.appendChild(vegeDiv);
+                vegeContainer.appendChild(tooltip);
+            
+                // Append vegeContainer to your recipe card or the desired parent container
+                recipeCard.appendChild(vegeContainer);
+            }
+
+            if (recipe.gluten_free) {
+                const glutenContainer = document.createElement("div");
+                glutenContainer.className = "gluten-container";
+            
+                const glutenDiv = document.createElement("div");
+                glutenDiv.className = "gluten-badge";
+                glutenDiv.textContent = "Gluten-free";
+            
+                const tooltip = document.createElement("div");
+                tooltip.className = "gluten-tooltip";
+                tooltip.textContent = "This recipe is gluten free";
+            
+                glutenContainer.appendChild(glutenDiv);
+                glutenContainer.appendChild(tooltip);
+            
+                // Append glutenContainer to your recipe card or the desired parent container
+                recipeCard.appendChild(glutenContainer);
+            }
+
             // Add title and nutriscore to header
             headerDiv.appendChild(title);
             headerDiv.appendChild(nutriscoreContainer);
+            headerDiv.appendChild(vegeContainer);
+            headerDiv.appendChild(glutenContainer);
+
 
             // Ingredients section
             const ingredientsDiv = document.createElement("div");

@@ -352,3 +352,126 @@ section {
 .nutriscore-e {
     background-color: #E63E11;
 }
+
+/* ===========================
+   REGIME STYLES
+   =========================== */
+   .recipe-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.recipe-header h3 {
+    margin: 0;
+    flex: 1;
+}
+
+.vege-container {
+    position: relative;
+    display: inline-block;
+}
+
+.gluten-container {
+    position: relative;
+    display: inline-block;
+}
+
+.vege {
+    padding: 8px 12px;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    min-width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px;
+}
+
+.gluten {
+    padding: 8px 12px;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    min-width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px;
+}
+
+.vege-tooltip {
+    visibility: hidden;
+    width: 200px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.4;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.gluten-tooltip {
+    visibility: hidden;
+    width: 200px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.4;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.vege-container:hover .vege-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.gluten-container:hover .gluten-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.vege-badge {
+    background-color: #4caf50;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.gluten-badge {
+    background-color: #57665f;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
