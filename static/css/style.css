@@ -16,7 +16,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #28a745; /* Green navbar */
+    background-color: #28a745;
     padding: 10px 20px;
     position: sticky;
     top: 0;
@@ -45,15 +45,15 @@
 }
 
 .navbar-links .nav-link:hover {
-    color: #91654c; /* Brown hover color */
+    color: #91654c;
 }
 
 /* ===========================
    SECTION STYLES
    =========================== */
-   section {
-    margin-top: 10px; /* Réduit l'écart global au-dessus des sections */
-    margin-bottom: 20px; /* Réduit l'écart global en dessous des sections */
+section {
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 /* ===========================
@@ -63,7 +63,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-   
     margin-bottom: 20px;
     padding: 60px 20px;
     background-color: #f9f9f9;
@@ -88,7 +87,7 @@
 }
 
 .home-text .highlight {
-    color: #28a745; /* Green highlight for "FoodLy" */
+    color: #28a745;
 }
 
 .home-text p {
@@ -139,7 +138,7 @@
     padding: 10px 20px;
     font-size: 16px;
     color: #ffffff;
-    background-color: #28a745; /* Green button */
+    background-color: #28a745;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -184,7 +183,7 @@
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 10px;
-    color: #91654c; /* Brown title */
+    color: #91654c;
 }
 
 /* ===========================
@@ -198,7 +197,7 @@
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 5px;
-    color: #28a745; /* Green section titles */
+    color: #28a745;
 }
 
 .ingredients p, .directions p {
@@ -219,28 +218,23 @@
 
 .ingredient-list {
     flex: 1;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
 }
 
 .selected-ingredients h3 {
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 10px;
-    color: #91654c; /* Brown for the title */
+    color: #91654c;
 }
-
-.ingredient-list {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-}
-
-/* Specific style for the "Show Recipes" button */
 
 .show-recipes-btn {
     padding: 10px 20px;
     font-size: 16px;
     color: white;
-    background-color: #91654c; /* Brown color for "Show Recipes" */
+    background-color: #91654c;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -250,7 +244,7 @@
 }
 
 .show-recipes-btn:hover {
-    background-color: #91654c; /* Darker brown on hover */
+    background-color: #91654c;
 }
 
 .search-container .show-recipes-btn {
@@ -278,4 +272,83 @@
 .about-us p {
     max-width: 800px;
     margin: 0 auto;
+}
+
+/* ===========================
+   NUTRISCORE STYLES
+   =========================== */
+.recipe-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.recipe-header h3 {
+    margin: 0;
+    flex: 1;
+}
+
+.nutriscore-container {
+    position: relative;
+    display: inline-block;
+}
+
+.nutriscore {
+    padding: 8px 12px;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    min-width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px;
+}
+
+.nutriscore-tooltip {
+    visibility: hidden;
+    width: 200px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.4;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.nutriscore-container:hover .nutriscore-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.nutriscore-a {
+    background-color: #038141;
+}
+
+.nutriscore-b {
+    background-color: #85BB2F;
+}
+
+.nutriscore-c {
+    background-color: #FEC52E;
+}
+
+.nutriscore-d {
+    background-color: #EF8200;
+}
+
+.nutriscore-e {
+    background-color: #E63E11;
 }

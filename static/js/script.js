@@ -3,7 +3,6 @@ const ingredientList = document.getElementById("ingredient-list");
 const selectedIngredientsContainer = document.getElementById("selected-ingredients-container");
 const showRecipesBtn = document.getElementById("show-recipes-btn");
 
-
 async function addIngredient() {
     const ingredient = ingredientInput.value.trim();
     if (ingredient) {
@@ -36,39 +35,59 @@ async function fetchIngredients() {
 }
 
 async function fetchRecipes() {
-    // Récupérer l'état de la case à cocher "exact match"
+    // Get the state of the exact match checkbox
     const exactMatch = document.getElementById("exact-match-checkbox").checked;
 
-    // Envoyer l'état du checkbox au backend avec la requête
+    // Send the request with exact match parameter
     const response = await fetch("/get_recipes", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ exact_match: exactMatch })  // Ajout de la donnée exact_match
+        body: JSON.stringify({ exact_match: exactMatch })
     });
 
     const recipes = await response.json();
     const recipesContainer = document.getElementById("recipes-container");
     const recipesTitleContainer = document.getElementById("recipes-title-container");
 
-    recipesContainer.innerHTML = ""; // Effacer les résultats précédents
+    recipesContainer.innerHTML = ""; // Clear previous results
 
     if (recipes.length > 0) {
-        // Affiche le titre "Recipes:"
         recipesTitleContainer.style.display = "block";
 
-        // Ajoute les recettes au conteneur
         recipes.forEach((recipe) => {
-            // Création d'un conteneur pour chaque recette
             const recipeDiv = document.createElement("div");
             recipeDiv.className = "recipe";
 
-            // Titre de la recette
+            // Header container for title and nutriscore
+            const headerDiv = document.createElement("div");
+            headerDiv.className = "recipe-header";
+
+            // Title of the recipe
             const title = document.createElement("h3");
             title.textContent = recipe.title;
 
-            // Section Ingrédients
+            // Nutriscore badge with tooltip
+            const nutriscoreContainer = document.createElement("div");
+            nutriscoreContainer.className = "nutriscore-container";
+            
+            const nutriscoreDiv = document.createElement("div");
+            nutriscoreDiv.className = `nutriscore nutriscore-${recipe.nutriscore.toLowerCase()}`;
+            nutriscoreDiv.textContent = recipe.nutriscore;
+            
+            const tooltip = document.createElement("div");
+            tooltip.className = "nutriscore-tooltip";
+            tooltip.textContent = getNutriscoreDescription(recipe.nutriscore);
+            
+            nutriscoreContainer.appendChild(nutriscoreDiv);
+            nutriscoreContainer.appendChild(tooltip);
+
+            // Add title and nutriscore to header
+            headerDiv.appendChild(title);
+            headerDiv.appendChild(nutriscoreContainer);
+
+            // Ingredients section
             const ingredientsDiv = document.createElement("div");
             ingredientsDiv.className = "ingredients";
             const ingredientsTitle = document.createElement("h4");
@@ -78,7 +97,7 @@ async function fetchRecipes() {
             ingredientsDiv.appendChild(ingredientsTitle);
             ingredientsDiv.appendChild(ingredientsList);
 
-            // Section Directions
+            // Directions section
             const directionsDiv = document.createElement("div");
             directionsDiv.className = "directions";
             const directionsTitle = document.createElement("h4");
@@ -88,20 +107,17 @@ async function fetchRecipes() {
             directionsDiv.appendChild(directionsTitle);
             directionsDiv.appendChild(directionsText);
 
-            // Ajout des sections au conteneur de la recette
-            recipeDiv.appendChild(title);
+            // Add all sections to recipe container
+            recipeDiv.appendChild(headerDiv);
             recipeDiv.appendChild(ingredientsDiv);
             recipeDiv.appendChild(directionsDiv);
 
-            // Ajout de la recette au conteneur principal
             recipesContainer.appendChild(recipeDiv);
         });
     } else {
-        // Masque le titre si aucune recette n'est disponible
         recipesTitleContainer.style.display = "none";
     }
 }
-
 
 function updateIngredientList(ingredients) {
     ingredientList.innerHTML = "";
@@ -120,7 +136,17 @@ function updateIngredientList(ingredients) {
     }
 }
 
-
+// Fonction pour obtenir la description du Nutriscore
+function getNutriscoreDescription(score) {
+    const descriptions = {
+        'A': 'Excellent nutritional quality',
+        'B': 'Good nutritional quality',
+        'C': 'Average nutritional quality',
+        'D': 'Poor nutritional quality',
+        'E': 'Very poor nutritional quality'
+    };
+    return descriptions[score] || 'Nutritional information not available';
+}
 
 // Initialize the list on page load
 fetchIngredients();
