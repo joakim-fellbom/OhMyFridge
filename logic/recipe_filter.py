@@ -19,4 +19,4 @@ def filter_recipes_by_ingredients(data, input_ingredients, exact_match=False):
     
     # Filtre les recettes en appliquant la condition sur la colonne 'ingredients'
     filtered_data = data[data['ingredients'].apply(contains_all_ingredients)]
-    return filtered_data[['title', 'ingredients', 'directions']]
+    return filtered_data[['title', 'ingredients', 'directions', 'nutriscore']]

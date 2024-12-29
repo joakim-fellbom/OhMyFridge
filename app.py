@@ -5,7 +5,7 @@ from logic.recipe_filter import filter_recipes_by_ingredients  # Assurez-vous qu
 app = Flask(__name__)
 
 # Chargement des données de recettes
-data = pd.read_csv("data/full_dataset.csv")
+data = pd.read_csv("data/full_dataset_with_nutriscore.csv")
 data['ingredients'] = data['ingredients'].apply(eval)  # Convertir la chaîne en liste Python
 
 # Liste pour stocker les ingrédients sélectionnés par l'utilisateur
@@ -41,4 +41,4 @@ def reset_ingredients():
     return jsonify(selected_ingredients)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
