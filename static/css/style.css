@@ -150,6 +150,74 @@ section {
 }
 
 /* ===========================
+   LOADER STYLES
+   =========================== */
+.loader-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    padding: 20px;
+    text-align: center;
+    min-height: 200px;
+}
+
+.loader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 3px solid #f3f3f3;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+.loader::after {
+    content: '';  
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-bottom-color: #28a745;
+}
+
+.loading-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    color: #28a745;
+    margin: 0;
+    font-weight: 500;
+    animation: fadeInOut 2s ease-in-out infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* ===========================
    RECIPE RESULTS SECTION
    =========================== */
 .recipe-results {
@@ -204,6 +272,26 @@ section {
     font-size: 16px;
     line-height: 1.6;
     color: #555;
+}
+
+.exact-match-wrapper {
+    display: flex;
+    width: 100%;
+    gap: 8px;
+    padding-top: 1em;
+}
+
+.exact-match-wrapper h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    width: 100%;
+}
+
+.checkbox-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
 }
 
 /* ===========================

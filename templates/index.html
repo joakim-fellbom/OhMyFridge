@@ -40,21 +40,31 @@
         <button onclick="addIngredient()">Add Ingredient</button>
         <button onclick="resetIngredients()">Reset List</button>
     </div>
+    <div class="error-message" id="error-message"></div>
+    <div class="exact-match-wrapper">
+        <h3>Exactly these ingredients</h3>
+        <div class="checkbox-container">
+            <input type="checkbox" id="exact-match-checkbox">
+        </div>
+    </div>
     <div class="ingredient-section">
         <div id="selected-ingredients-container" class="selected-ingredients" style="display: none;">
             <h3>Selected Ingredients:</h3>
             <ul id="ingredient-list"></ul>
         </div>
-        <!-- Ajout de la case à cocher pour exactement les ingredients en input -->
-        <label>
-            <input type="checkbox" id="exact-match-checkbox">
-            <h3>Exactly these ingredients</h3>  
-        </label>
         <button id="show-recipes-btn" class="show-recipes-btn" onclick="fetchRecipes()" style="display: none;">
             Show Recipes
         </button>
     </div>    
 </section>
+
+<!-- Loader Section -->
+<div id="loader" class="loader-container">
+    <div class="loader-content">
+        <span class="loader"></span>
+        <p class="loading-text">Cooking up something special for you...</p>
+    </div>
+</div>
 
    <!-- Recipe Results Section -->
 <!-- Recipe Results Section -->

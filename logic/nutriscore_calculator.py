@@ -47,7 +47,7 @@ def calculate_nutriscore(ingredients_list):
             'baby carrots', 'celery ribs', 'celery stalks', 'water chestnuts',
             'bamboo shoots', 'bean sprouts', 'cabbage', 'brussels sprouts',
             'eggplant', 'mushrooms', 'button mushrooms', 'portobello mushrooms'],        
-        'lean_proteins': ['chicken breast', 'skinless chicken breast', 'turkey',
+        'lean_proteins': ['beef','chicken','chicken breast', 'skinless chicken breast', 'turkey',
             'fish', 'salmon', 'tuna', 'shrimp', 'lean beef',
             'tofu', 'lentils', 'chickpeas', 'quinoa',
             'black beans', 'kidney beans', 'pinto beans',

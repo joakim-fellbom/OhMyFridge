@@ -2,10 +2,17 @@ const ingredientInput = document.getElementById("ingredient-input");
 const ingredientList = document.getElementById("ingredient-list");
 const selectedIngredientsContainer = document.getElementById("selected-ingredients-container");
 const showRecipesBtn = document.getElementById("show-recipes-btn");
+const loader = document.getElementById("loader");
+const recipesContainer = document.getElementById("recipes-container");
+const recipesTitleContainer = document.getElementById("recipes-title-container");
+
+let allowedIngredients = [];
 
 async function addIngredient() {
-    const ingredient = ingredientInput.value.trim();
-    if (ingredient) {
+    const ingredient = ingredientInput.value.trim().toLowerCase();
+    const errorMessageDiv = document.getElementById("error-message");
+    
+    if (ingredient && allowedIngredients.includes(ingredient)) {
         const response = await fetch("/add_ingredient", {
             method: "POST",
             headers: {
@@ -16,6 +23,10 @@ async function addIngredient() {
         const updatedList = await response.json();
         updateIngredientList(updatedList);
         ingredientInput.value = "";
+        errorMessageDiv.textContent = "";
+    } else {
+        errorMessageDiv.textContent = "Ingredient not allowed. Please enter a valid ingredient.";
+        errorMessageDiv.style.color = "red";
     }
 }
 
@@ -30,92 +41,114 @@ async function resetIngredients() {
 async function fetchIngredients() {
     const response = await fetch("/get_ingredients");
     const ingredients = await response.json();
-    recipesTitleContainer.style.display = "block";
     updateIngredientList(ingredients);
 }
 
+async function fetchAllowedIngredients() {
+    try {
+        const response = await fetch("/static/unique_ingredients.json");
+        allowedIngredients = await response.json();
+    } catch (error) {
+        console.error("Error fetching allowed ingredients:", error);
+    }
+}
+
 async function fetchRecipes() {
-    // Get the state of the exact match checkbox
     const exactMatch = document.getElementById("exact-match-checkbox").checked;
 
-    // Send the request with exact match parameter
-    const response = await fetch("/get_recipes", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ exact_match: exactMatch })
-    });
+    // Show loader and hide containers
+    loader.style.display = "flex";
+    recipesContainer.style.display = "none";
+    recipesTitleContainer.style.display = "none";
 
-    const recipes = await response.json();
-    const recipesContainer = document.getElementById("recipes-container");
-    const recipesTitleContainer = document.getElementById("recipes-title-container");
-
-    recipesContainer.innerHTML = ""; // Clear previous results
-
-    if (recipes.length > 0) {
-        recipesTitleContainer.style.display = "block";
-
-        recipes.forEach((recipe) => {
-            const recipeDiv = document.createElement("div");
-            recipeDiv.className = "recipe";
-
-            // Header container for title and nutriscore
-            const headerDiv = document.createElement("div");
-            headerDiv.className = "recipe-header";
-
-            // Title of the recipe
-            const title = document.createElement("h3");
-            title.textContent = recipe.title;
-
-            // Nutriscore badge with tooltip
-            const nutriscoreContainer = document.createElement("div");
-            nutriscoreContainer.className = "nutriscore-container";
-            
-            const nutriscoreDiv = document.createElement("div");
-            nutriscoreDiv.className = `nutriscore nutriscore-${recipe.nutriscore.toLowerCase()}`;
-            nutriscoreDiv.textContent = recipe.nutriscore;
-            
-            const tooltip = document.createElement("div");
-            tooltip.className = "nutriscore-tooltip";
-            tooltip.textContent = getNutriscoreDescription(recipe.nutriscore);
-            
-            nutriscoreContainer.appendChild(nutriscoreDiv);
-            nutriscoreContainer.appendChild(tooltip);
-
-            // Add title and nutriscore to header
-            headerDiv.appendChild(title);
-            headerDiv.appendChild(nutriscoreContainer);
-
-            // Ingredients section
-            const ingredientsDiv = document.createElement("div");
-            ingredientsDiv.className = "ingredients";
-            const ingredientsTitle = document.createElement("h4");
-            ingredientsTitle.textContent = "Ingredients:";
-            const ingredientsList = document.createElement("p");
-            ingredientsList.textContent = recipe.ingredients.join(", ");
-            ingredientsDiv.appendChild(ingredientsTitle);
-            ingredientsDiv.appendChild(ingredientsList);
-
-            // Directions section
-            const directionsDiv = document.createElement("div");
-            directionsDiv.className = "directions";
-            const directionsTitle = document.createElement("h4");
-            directionsTitle.textContent = "Directions:";
-            const directionsText = document.createElement("p");
-            directionsText.textContent = recipe.directions;
-            directionsDiv.appendChild(directionsTitle);
-            directionsDiv.appendChild(directionsText);
-
-            // Add all sections to recipe container
-            recipeDiv.appendChild(headerDiv);
-            recipeDiv.appendChild(ingredientsDiv);
-            recipeDiv.appendChild(directionsDiv);
-
-            recipesContainer.appendChild(recipeDiv);
+    try {
+        const response = await fetch("/get_recipes", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ exact_match: exactMatch })
         });
-    } else {
-        recipesTitleContainer.style.display = "none";
+
+        const data = await response.json();
+        recipesContainer.innerHTML = "";
+
+        // Parse and prepare recipes
+        const recipes = Object.values(data).map(recipe => ({
+            ...recipe,
+            ingredients: typeof recipe.ingredients === 'string' ? 
+                JSON.parse(recipe.ingredients.replace(/'/g, '"')) : recipe.ingredients,
+            directions: typeof recipe.directions === 'string' ? 
+                JSON.parse(recipe.directions) : recipe.directions
+        }));
+
+        // Hide loader and show recipes container
+        loader.style.display = "none";
+        recipesContainer.style.display = "block";
+
+        if (recipes.length > 0) {
+            recipesTitleContainer.style.display = "block";
+            
+            recipes.forEach((recipe) => {
+                const recipeDiv = document.createElement("div");
+                recipeDiv.className = "recipe";
+
+                const headerDiv = document.createElement("div");
+                headerDiv.className = "recipe-header";
+
+                const title = document.createElement("h3");
+                title.textContent = recipe.title;
+
+                const nutriscoreContainer = document.createElement("div");
+                nutriscoreContainer.className = "nutriscore-container";
+                
+                const nutriscoreDiv = document.createElement("div");
+                nutriscoreDiv.className = `nutriscore nutriscore-${recipe.nutriscore.toLowerCase()}`;
+                nutriscoreDiv.textContent = recipe.nutriscore;
+                
+                const tooltip = document.createElement("div");
+                tooltip.className = "nutriscore-tooltip";
+                tooltip.textContent = getNutriscoreDescription(recipe.nutriscore);
+                
+                nutriscoreContainer.appendChild(nutriscoreDiv);
+                nutriscoreContainer.appendChild(tooltip);
+
+                headerDiv.appendChild(title);
+                headerDiv.appendChild(nutriscoreContainer);
+
+                const ingredientsDiv = document.createElement("div");
+                ingredientsDiv.className = "ingredients";
+                const ingredientsTitle = document.createElement("h4");
+                ingredientsTitle.textContent = "Ingredients:";
+                const ingredientsList = document.createElement("p");
+                ingredientsList.textContent = recipe.ingredients.join(", ");
+                ingredientsDiv.appendChild(ingredientsTitle);
+                ingredientsDiv.appendChild(ingredientsList);
+
+                const directionsDiv = document.createElement("div");
+                directionsDiv.className = "directions";
+                const directionsTitle = document.createElement("h4");
+                directionsTitle.textContent = "Directions:";
+                const directionsText = document.createElement("p");
+                directionsText.textContent = recipe.directions.join(" ");
+                directionsDiv.appendChild(directionsTitle);
+                directionsDiv.appendChild(directionsText);
+
+                recipeDiv.appendChild(headerDiv);
+                recipeDiv.appendChild(ingredientsDiv);
+                recipeDiv.appendChild(directionsDiv);
+
+                recipesContainer.appendChild(recipeDiv);
+            });
+        } else {
+            recipesContainer.innerHTML = "<p>No recipes found with these ingredients.</p>";
+        }
+    } catch (error) {
+        console.error("Error fetching recipes:", error);
+        // Hide loader and show error message
+        loader.style.display = "none";
+        recipesContainer.style.display = "block";
+        recipesContainer.innerHTML = "<p>Error loading recipes. Please try again.</p>";
     }
 }
 
@@ -126,7 +159,6 @@ function updateIngredientList(ingredients) {
         li.textContent = ingredient;
         ingredientList.appendChild(li);
     });
-    // Show or hide the "Selected Ingredients" and "Show Recipes" sections
     if (ingredients.length > 0) {
         selectedIngredientsContainer.style.display = "block";
         showRecipesBtn.style.display = "inline-block";
@@ -136,7 +168,6 @@ function updateIngredientList(ingredients) {
     }
 }
 
-// Fonction pour obtenir la description du Nutriscore
 function getNutriscoreDescription(score) {
     const descriptions = {
         'A': 'Excellent nutritional quality',
@@ -148,5 +179,6 @@ function getNutriscoreDescription(score) {
     return descriptions[score] || 'Nutritional information not available';
 }
 
-// Initialize the list on page load
+// Initialize
+fetchAllowedIngredients();
 fetchIngredients();

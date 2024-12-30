@@ -15,7 +15,7 @@ data['ingredients'] = data['ingredients'].apply(eval)  # Convert string to Pytho
 data['nutriscore'] = data['ingredients'].apply(calculate_nutriscore)
 
 # Keep only the desired columns
-data = data[['title', 'ingredients', 'directions', 'nutriscore']]
+data = data[['title', 'ingredients', 'directions', 'nutriscore','NER']]
 
 # Save the updated dataset to a new CSV file
 data.to_csv("full_dataset_with_nutriscore.csv", index=False)
