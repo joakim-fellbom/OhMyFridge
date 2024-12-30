@@ -1,26 +1,20 @@
 from flask import Flask, request, jsonify, render_template
 import pandas as pd
-import random
-from logic.recipe_filter import filter_recipes_by_ingredients  # Import de la fonction de filtrage
+from logic.recipe_filter import filter_recipes_by_ingredients  # Assurez-vous que l'importation est correcte
 
 app = Flask(__name__)
 
 # Chargement des données de recettes
-data = pd.read_csv("data/full_dataset.csv")
+data = pd.read_csv("data/full_dataset_with_nutriscore.csv")#Faire tourner le script data_processing.py avec full_dataset.csv pour obtenir ce fichier
 data['ingredients'] = data['ingredients'].apply(eval)  # Convertir la chaîne en liste Python
 
 # Liste pour stocker les ingrédients sélectionnés par l'utilisateur
 selected_ingredients = []
 
-# Route pour obtenir des recettes aléatoires
-@app.route("/get_random_recipes")
-def get_random_recipes():
-    # Sélectionner 10 recettes aléatoires
-    random_recipes = data.sample(n=10)  # Prendre 10 recettes au hasard
-    recipes_list = random_recipes.to_dict(orient="records")  # Convertir les recettes en format JSON
-    return jsonify(recipes_list)
+@app.route("/")
+def home():
+    return render_template("index.html")
 
-# Route pour ajouter un ingrédient
 @app.route("/add_ingredient", methods=["POST"])
 def add_ingredient():
     global selected_ingredients
@@ -29,19 +23,21 @@ def add_ingredient():
         selected_ingredients.append(ingredient)
     return jsonify(selected_ingredients)
 
-# Route pour obtenir les recettes correspondant aux ingrédients
 @app.route("/get_recipes", methods=["POST"])
 def get_recipes():
     global selected_ingredients
-    exact_match = request.json.get("exact_match", False)  # Récupérer l'état de la case à cocher
+    exact_match = request.json.get("exact_match", False)  # Récupérer la valeur de exact_match
 
     # Filtrage des recettes selon la correspondance exacte ou partielle
     filtered_recipes = filter_recipes_by_ingredients(data, selected_ingredients, exact_match=exact_match)
     
+    # Obtenir 10 recettes aléatoires parmi les recettes filtrées (ou toutes si moins de 10)
+    n_recipes = min(10, len(filtered_recipes))
+    filtered_recipes = filtered_recipes.sample(n=n_recipes)
+
     recipes = filtered_recipes.to_dict(orient="records")  # Convertir le DataFrame en liste de dictionnaires
     return jsonify(recipes)
 
-# Route pour réinitialiser les ingrédients
 @app.route("/reset_ingredients", methods=["POST"])
 def reset_ingredients():
     global selected_ingredients
@@ -49,4 +45,4 @@ def reset_ingredients():
     return jsonify(selected_ingredients)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)#Ne pas modifier c'est pour docker

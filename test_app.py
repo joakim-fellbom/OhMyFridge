@@ -1,21 +1,11 @@
 import unittest
 from app import app
+from logic.nutriscore_calculator import calculate_nutriscore
 
 class TestRandomRecipes(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()  # Client de test Flask
         self.app.testing = True
-
-    def test_get_random_recipes(self):
-        # Tester la route /get_random_recipes
-        response = self.app.get('/get_random_recipes')
-        self.assertEqual(response.status_code, 200)  # Vérifie le code de statut
-        data = response.get_json()  # Récupère le JSON de la réponse
-        
-        self.assertEqual(len(data), 10)  # Vérifie qu'il y a 10 recettes
-        for recipe in data:
-            self.assertIn('title', recipe)  # Vérifie que chaque recette a un titre
-            self.assertIn('ingredients', recipe)  # Vérifie que chaque recette a des ingrédients
 
     def test_get_recipes_with_exact_match(self):
         # Exemple d'ingrédients saisis
@@ -69,6 +59,33 @@ class TestRandomRecipes(unittest.TestCase):
             
             # Vérifiaction de la correspondance partielle
             self.assertTrue(all(ingredient in recipe_ingredients for ingredient in selected_ingredients_normalized))  # Vérifie une correspondance partielle
+
+    def test_calculate_nutriscore(self):
+        # Test case 1: High positive score
+        ingredients = ['apple', 'spinach', 'chicken breast', 'quinoa', 'olive oil']
+        expected_score = 'A'
+        self.assertEqual(calculate_nutriscore(ingredients), expected_score)
+
+        # Test case 2: Balanced score
+        ingredients = ['apple', 'sugar', 'chicken breast', 'white bread', 'olive oil']
+        expected_score = 'C'
+        self.assertEqual(calculate_nutriscore(ingredients), expected_score)
+
+        # Test case 3: High negative score
+        ingredients = ['sugar', 'butter', 'white bread', 'processed cheese', 'bacon']
+        expected_score = 'E'
+        self.assertEqual(calculate_nutriscore(ingredients), expected_score)
+
+        # Test case 4: Mixed score
+        ingredients = ['apple', 'spinach', 'sugar', 'butter', 'olive oil']
+        expected_score = 'C'
+        self.assertEqual(calculate_nutriscore(ingredients), expected_score)
+
+        # Test case 5: No ingredients
+        ingredients = []
+        expected_score = 'C'
+        self.assertEqual(calculate_nutriscore(ingredients), expected_score)
+          
 
 if __name__ == '__main__':
     unittest.main()
