@@ -53,7 +53,7 @@ def get_recipes():
         #ingredients_str = str(ingredients_lower).replace("'", "\"")
         ingredients_formatted = [f'\"{ing.lower()}\"' for ing in selected_ingredients]
         ingredients_joined = ", ".join(ingredients_formatted)
-        ingredients_str = f"[{ingredients_joined}]"     
+        ingredients_str = f"[{ingredients_joined}]"  
         
         if exact_match:
             # For exact match using $iContains
