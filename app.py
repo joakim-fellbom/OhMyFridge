@@ -50,13 +50,16 @@ def get_recipes():
     
     try:
         ingredients_lower = [ing.lower() for ing in selected_ingredients]
-        ingredients_str = str(ingredients_lower).replace("'", "\"")
+        #ingredients_str = str(ingredients_lower).replace("'", "\"")
+        ingredients_formatted = [f'\"{ing.lower()}\"' for ing in selected_ingredients]
+        ingredients_joined = ", ".join(ingredients_formatted)
+        ingredients_str = f"[{ingredients_joined}]"
         
         if exact_match:
             # For exact match using $iContains
             filter_conditions = {
                 "NER": {
-                    "$iContains": ingredients_str
+                    "$iContains": ingredients_str 
                 }
             }
         else:
