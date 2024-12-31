@@ -92,6 +92,13 @@ FoodLy est une application web qui aide les utilisateurs à trouver des recettes
     vercel
     ```
 
+### Lancer les Tests
+
+1. Exécuter les tests avec `unittest` :
+    ```bash
+    python -m unittest tests/test_app.py
+    ```
+
 ## Structure du Projet
 
 ```
@@ -109,6 +116,8 @@ OhMyFridge/
 │       └── script.js
 ├── templates/
 │   └── index.html
+├── tests/
+│   └── test_app.py
 ├── .dockerignore
 ├── .env.example
 ├── .gitignore
